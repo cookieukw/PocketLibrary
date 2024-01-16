@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import {
   IonContent,
   IonPage,
@@ -14,7 +15,8 @@ import {
   IonSelectOption,
   IonLoading,
 } from "@ionic/react";
-import { document, images, musicalNotes, fileTray } from "ionicons/icons";
+import { document, images, musicalNotes, film, playOutline } from 'ionicons/icons';
+
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
@@ -22,6 +24,7 @@ import MediaSelectionMenu from "../components/MediaSelectionMenu";
 import CategorySelectionMenu from "../components/CategorySelectionMenuProps";
 import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
+import LanguageSelection from "../components/LanguageSelection";
 
 interface IBook {
   title: string;
@@ -34,7 +37,8 @@ interface IBook {
   bookId: string;
 }
 
-const url: string = "http://localhost:3000/api/books"; // "https://bpocket.vercel.app/api/books";
+const url: string = "https://bpocket.vercel.app/api/books";
+//const url: string = "http://localhost:3000/api/books";
 
 const BookList: React.FC = () => {
   console.log(0);
@@ -46,6 +50,7 @@ const BookList: React.FC = () => {
   const [searchType, setSearchType] = useState<string>("title");
   const [selectedMediaType, setSelectedMediaType] = useState<number>(2);
   const [selectedCategory, setSelectedCategory] = useState<number>(43);
+  const [language, setLanguage] = useState<number>(1);
 
   const navigate = useHistory();
 
@@ -63,14 +68,15 @@ const BookList: React.FC = () => {
       searchTerm: string,
       searchType: string,
       selectedMediaType: number,
-      selectedCategory: number
+      selectedCategory: number,
+      language: number
     ) => {
       setIsLoading(true);
       try {
         console.log("request");
-        const requestUrl: string = `${url}?itemsSize=${itemsSize}&skipItems=${skipItems}&${searchType}=${searchTerm}&media=${selectedMediaType}&category=${selectedCategory}`;
+        const requestUrl: string = `${url}?itemsSize=${itemsSize}&skipItems=${skipItems}&${searchType}=${searchTerm}&media=${selectedMediaType}&category=${selectedCategory}&language=${language}`;
         const response = await axios.get(requestUrl);
-        console.log(requestUrl);
+        console.log({ requestUrl, response: response.data });
         const newBooks: IBook[] = response.data;
         setBooks((prevBooks) => {
           const uniqueBooks = newBooks.filter(
@@ -92,13 +98,20 @@ const BookList: React.FC = () => {
       searchType,
       skipItems,
       selectedMediaType,
-      selectedCategory,
+      selectedCategory, language
     ]
   );
 
   useEffect(() => {
     if (books.length === 0) {
-      getBooks(0, searchTerm, searchType, selectedMediaType, selectedCategory);
+      getBooks(
+        0,
+        searchTerm,
+        searchType,
+        selectedMediaType,
+        selectedCategory,
+        language
+      );
     }
   }, []);
 
@@ -108,23 +121,39 @@ const BookList: React.FC = () => {
     setSearchTerm(value);
     setSkipItems(0);
     setBooks([]);
-    getBooks(0, value, searchType, selectedMediaType, selectedCategory);
+    getBooks(
+      0,
+      value,
+      searchType,
+      selectedMediaType,
+      selectedCategory,
+      language
+    );
   }, 1200);
 
-  const handleSearch = (value: string) => {
-    handleSearchDebounced(value);
-  };
-
   const getIcon = (format: string) => {
-    switch (format) {
-      case "pdf":
+    switch (format.toLowerCase()) {
+      case 'pdf':
         return document;
-      case "jpg":
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
         return images;
-      case "mp4":
+      case 'mp4':
+      case 'avi':
+      case 'mkv':
+        return film;
+      case 'mp3':
+      case 'wav':
+      case 'ogg':
         return musicalNotes;
+      case 'doc':
+      case 'docx':
+      case 'txt':
+        return document;
       default:
-        return fileTray;
+        return playOutline; // Ícone genérico para outros formatos de arquivo de áudio/vídeo
     }
   };
 
@@ -134,23 +163,21 @@ const BookList: React.FC = () => {
         <IonSearchbar
           value={searchTerm}
           onIonInput={(e) => handleSearchDebounced(e.detail.value!)}
-          onIonClear={() =>{
-   
-              setSearchTerm("");
-              setSkipItems(0);
-              setBooks([]);
-              getBooks(
-                0,
-                "",
-                searchType,
-                selectedMediaType,
-                selectedCategory
-              );
-      
+          onIonClear={() => {
+            setSearchTerm("");
+            setSkipItems(0);
+            setBooks([]);
+            getBooks(
+              0,
+              "",
+              searchType,
+              selectedMediaType,
+              selectedCategory,
+              language
+            );
           }}
         ></IonSearchbar>
         <IonSelect
-          style={{ padding: "10px", margin: "0 0 0 20px" }}
           value={searchType}
           placeholder="Escolha o tipo de busca"
           onIonChange={(e) => {
@@ -163,7 +190,8 @@ const BookList: React.FC = () => {
               searchTerm,
               e.detail.value,
               selectedMediaType,
-              selectedCategory
+              selectedCategory,
+              language
             );
           }}
         >
@@ -173,17 +201,16 @@ const BookList: React.FC = () => {
 
         <MediaSelectionMenu
           selectedMediaType={selectedMediaType}
-          setSelectedMediaType={() => setSelectedMediaType}
+          setSelectedMediaType={setSelectedMediaType}
           onMediaTypeChange={(selectedValue: number) => {
-            setSelectedMediaType(selectedValue);
             setSkipItems(0);
-            setBooks([]);
             getBooks(
               0,
               searchTerm,
               searchType,
               selectedValue,
-              selectedCategory
+              selectedCategory,
+              language
             );
           }}
         />
@@ -200,10 +227,29 @@ const BookList: React.FC = () => {
               searchTerm,
               searchType,
               selectedMediaType,
-              selectedValue
+              selectedValue,
+              language
             );
           }}
         />
+        <LanguageSelection
+          onLanguageChange={(language) => {
+            setLanguage(language);
+            setSkipItems(0);
+            setBooks([]);
+            getBooks(
+              0,
+              searchTerm,
+              searchType,
+              selectedMediaType,
+              selectedCategory,
+              language
+            );
+          }}
+          language={language}
+          setLanguage={setLanguage}
+        />
+
         <IonList>
           {books.length > 0 ? (
             books.map((book: IBook) => {
@@ -224,7 +270,7 @@ const BookList: React.FC = () => {
                       padding: "30px",
                       color: "white",
                     }}
-                    icon={getIcon(format)}
+                    icon={getIcon(format.substring(1))}
                   />
                   <IonLabel>
                     <h2
@@ -285,9 +331,8 @@ const BookList: React.FC = () => {
           )}
         </IonList>
         <IonInfiniteScroll
-          threshold="100px"
+          threshold="10vh"
           onIonInfinite={(e: any) => {
-            if (books.length < skipItems) return;
             if (!isLoading) {
               console.log("carregando mais");
               setSkipItems((prev) => {
@@ -297,7 +342,8 @@ const BookList: React.FC = () => {
                   searchTerm,
                   searchType,
                   selectedMediaType,
-                  selectedCategory
+                  selectedCategory,
+                  language
                 );
                 return newSkipItems;
               });
@@ -306,12 +352,10 @@ const BookList: React.FC = () => {
             setTimeout(() => e.target.complete(), 500);
           }}
         >
-          {books.length > skipItems && (
-            <IonInfiniteScrollContent
-              loadingText="Carregando mais..."
-              loadingSpinner="bubbles"
-            ></IonInfiniteScrollContent>
-          )}
+          <IonInfiniteScrollContent
+            loadingText="Carregando mais..."
+            loadingSpinner="bubbles"
+          ></IonInfiniteScrollContent>
         </IonInfiniteScroll>
         <IonLoading
           isOpen={isLoading && books.length > skipItems}

@@ -11,8 +11,8 @@ import {
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { book, planet } from "ionicons/icons";
-import BookList from "./pages/BookList";
-import Favorite from "./pages/Favorite";
+import BookList from "./screens/BookList";
+import Favorite from "./screens/Favorite";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,6 +32,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import BookInfo from "./screens/BookInfo";
 
 setupIonicReact();
 
@@ -45,6 +46,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/favorite">
             <Favorite />
+          </Route>
+          <Route exact path="/bookInfo/:bookId">
+            <BookInfo />
           </Route>
 
           <Route exact path="/">

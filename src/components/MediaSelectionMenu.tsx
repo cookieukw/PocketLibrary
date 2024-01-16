@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 interface IMediaSelectionMenuProps {
   onMediaTypeChange: (selectedMediaType: number) => void;
-  setSelectedMediaType: () =>void
+  setSelectedMediaType: Dispatch<SetStateAction<number>>;
   selectedMediaType: number;
 }
 const MediaSelectionMenu: React.FC<IMediaSelectionMenuProps> = ({
@@ -13,9 +13,12 @@ const MediaSelectionMenu: React.FC<IMediaSelectionMenuProps> = ({
 }) => {
   return (
     <IonSelect
-      style={{ padding: "10px", margin: "0 0 0 20px" }}
       value={selectedMediaType}
-      onIonChange={(e: any) => onMediaTypeChange(parseInt(e.detail.value, 2))}
+      onIonChange={(e: any) => {
+        setSelectedMediaType(e.detail.value)
+        onMediaTypeChange(parseInt(e.detail.value))
+
+      }}
     >
       <IonSelectOption value={5}>
         <IonLabel>Imagem</IonLabel>

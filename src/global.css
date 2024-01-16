@@ -1,0 +1,13 @@
+ion-select {
+  padding: 10px;
+  margin: 0 0 0 20px;
+  border-color: var(--ion-select-border-color);
+
+  .select-text {
+    color: var(--ion-select-text-color);
+  }
+
+  .select-placeholder {
+    color: var(--ion-select-placeholder-color);
+  }
+}

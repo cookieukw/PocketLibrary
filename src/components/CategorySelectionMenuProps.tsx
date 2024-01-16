@@ -171,7 +171,6 @@ const CategorySelectionMenu: React.FC<ICategorySelectionMenuProps> = ({
 
   return (
     <IonSelect
-      style={{ padding: "10px", margin: "0 0 0 20px" }}
       value={selectedCategory}
       placeholder="Selecione a Categoria"
       onIonChange={(e) => handleCategoryChange(parseInt(e.detail.value, 10))}
