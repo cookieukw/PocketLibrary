@@ -200,8 +200,6 @@ const BookList: React.FC = () => {
         </motion.div>
 
         <AnimatePresence>
-
-
           {showCategories && (
             <>
               <IonSelect

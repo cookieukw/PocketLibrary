@@ -53,7 +53,7 @@ const BookInfo: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonBackButton defaultHref="/api/books" />
+                        <IonBackButton defaultHref="/home" />
                     </IonButtons>
                     <IonTitle>Detalhes do Livro</IonTitle>
                 </IonToolbar>
