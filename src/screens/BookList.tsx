@@ -285,70 +285,78 @@ const BookList: React.FC = () => {
             books.map((book: IBook) => {
               const { title, author, font, size, format, link, bookId } = book;
               return (
-                <IonItem
+                <motion.div
                   key={bookId}
-                  style={{
-                    padding: "20px",
-                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                  <IonIcon
+
+                  <IonItem
+                    key={bookId}
                     style={{
-                      height: "140px",
-                      width: "100px",
-                      margin: "0 10px",
-                      border: "1px solid #ffffff",
-                      padding: "30px",
-                      color: "white",
+                      padding: "20px",
                     }}
-                    icon={getIcon(format.substring(1))}
-                  />
-                  <IonLabel>
-                    <h2
+                  >
+                    <IonIcon
                       style={{
-                        fontWeight: "bold",
-                        textTransform: "capitalize",
+                        height: "140px",
+                        width: "100px",
+                        margin: "0 10px",
+                        border: "1px solid #ffffff",
+                        padding: "30px",
+                        color: "white",
                       }}
-                    >
-                      {title}
-                    </h2>
-                    <div
-                      style={{
-                        border: "1px solid #ccc",
-                        padding: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <p>
-                        <strong>Autor:</strong> {toCamelCase(author)}
-                      </p>
-                      <p>
-                        <strong>Fonte:</strong>{" "}
-                        {font.charAt(0).toUpperCase() + font.slice(1)}
-                      </p>
-                      <p>
-                        <strong>Tamanho:</strong> {size}
-                      </p>
-                      <p>
-                        <strong>Formato:</strong>{" "}
-                        {format.substring(1).toUpperCase()}
-                      </p>
-                      <p>
-                        <a
-                          href={link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Link do livro
-                        </a>
-                      </p>
-                      <IonButton
-                        onClick={() => navigate.push(`/bookInfo/${bookId}`)}
+                      icon={getIcon(format.substring(1))}
+                    />
+                    <IonLabel>
+                      <h2
+                        style={{
+                          fontWeight: "bold",
+                          textTransform: "capitalize",
+                        }}
                       >
-                        Ver mais sobre o livro
-                      </IonButton>
-                    </div>
-                  </IonLabel>
-                </IonItem>
+                        {title}
+                      </h2>
+                      <div
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        <p>
+                          <strong>Autor:</strong> {toCamelCase(author)}
+                        </p>
+                        <p>
+                          <strong>Fonte:</strong>{" "}
+                          {font.charAt(0).toUpperCase() + font.slice(1)}
+                        </p>
+                        <p>
+                          <strong>Tamanho:</strong> {size}
+                        </p>
+                        <p>
+                          <strong>Formato:</strong>{" "}
+                          {format.substring(1).toUpperCase()}
+                        </p>
+                        <p>
+                          <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Link do livro
+                          </a>
+                        </p>
+                        <IonButton
+                          onClick={() => navigate.push(`/bookInfo/${bookId}`)}
+                        >
+                          Ver mais sobre o livro
+                        </IonButton>
+                      </div>
+                    </IonLabel>
+                  </IonItem>
+                </motion.div>
               );
             })
           ) : (
