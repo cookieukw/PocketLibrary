@@ -25,6 +25,7 @@ import CategorySelectionMenu from "../components/CategorySelectionMenuProps";
 import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
 import LanguageSelection from "../components/LanguageSelection";
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface IBook {
   title: string;
@@ -51,6 +52,7 @@ const BookList: React.FC = () => {
   const [selectedMediaType, setSelectedMediaType] = useState<number>(2);
   const [selectedCategory, setSelectedCategory] = useState<number>(43);
   const [language, setLanguage] = useState<number>(1);
+  const [showCategories, setShowCategories] = useState<boolean>(false);
 
   const navigate = useHistory();
 
@@ -177,79 +179,107 @@ const BookList: React.FC = () => {
             );
           }}
         ></IonSearchbar>
-        <IonSelect
-          value={searchType}
-          placeholder="Escolha o tipo de busca"
-          onIonChange={(e) => {
-            setSearchType(e.detail.value);
-            console.log(`change search by ${e.detail.value}`);
-            setSkipItems(0);
-            setBooks([]);
-            getBooks(
-              0,
-              searchTerm,
-              e.detail.value,
-              selectedMediaType,
-              selectedCategory,
-              language
-            );
-          }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <IonSelectOption value="title">Título</IonSelectOption>
-          <IonSelectOption value="authorName">Autor</IonSelectOption>
-        </IonSelect>
+          <motion.button
+            style={{
+              margin: "20px",
+              background: "transparent",
+              border: "none",
+              color: "white", fontWeight: "bold"
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setShowCategories(!showCategories)}
+          >
+            {showCategories ? 'Esconder Categorias' : 'Mostrar Categorias'}
+          </motion.button>
+        </motion.div>
 
-        <MediaSelectionMenu
-          selectedMediaType={selectedMediaType}
-          setSelectedMediaType={setSelectedMediaType}
-          onMediaTypeChange={(selectedValue: number) => {
-            setSkipItems(0);
-            getBooks(
-              0,
-              searchTerm,
-              searchType,
-              selectedValue,
-              selectedCategory,
-              language
-            );
-          }}
-        />
-        <CategorySelectionMenu
-          setSelectedCategory={setSelectedCategory}
-          selectedCategory={selectedCategory}
-          selectedMediaType={selectedMediaType}
-          onCategoryChange={(selectedValue: number) => {
-            setSelectedCategory(selectedValue);
-            setSkipItems(0);
-            setBooks([]);
-            getBooks(
-              0,
-              searchTerm,
-              searchType,
-              selectedMediaType,
-              selectedValue,
-              language
-            );
-          }}
-        />
-        <LanguageSelection
-          onLanguageChange={(language) => {
-            setLanguage(language);
-            setSkipItems(0);
-            setBooks([]);
-            getBooks(
-              0,
-              searchTerm,
-              searchType,
-              selectedMediaType,
-              selectedCategory,
-              language
-            );
-          }}
-          language={language}
-          setLanguage={setLanguage}
-        />
+        <AnimatePresence>
 
+
+          {showCategories && (
+            <>
+              <IonSelect
+                value={searchType}
+                placeholder="Escolha o tipo de busca"
+                onIonChange={(e) => {
+                  setSearchType(e.detail.value);
+                  console.log(`change search by ${e.detail.value}`);
+                  setSkipItems(0);
+                  setBooks([]);
+                  getBooks(
+                    0,
+                    searchTerm,
+                    e.detail.value,
+                    selectedMediaType,
+                    selectedCategory,
+                    language
+                  );
+                }}
+              >
+                <IonSelectOption value="title">Título</IonSelectOption>
+                <IonSelectOption value="authorName">Autor</IonSelectOption>
+              </IonSelect>
+
+              <MediaSelectionMenu
+                selectedMediaType={selectedMediaType}
+                setSelectedMediaType={setSelectedMediaType}
+                onMediaTypeChange={(selectedValue: number) => {
+                  setSkipItems(0);
+                  getBooks(
+                    0,
+                    searchTerm,
+                    searchType,
+                    selectedValue,
+                    selectedCategory,
+                    language
+                  );
+                }}
+              />
+              <CategorySelectionMenu
+                setSelectedCategory={setSelectedCategory}
+                selectedCategory={selectedCategory}
+                selectedMediaType={selectedMediaType}
+                onCategoryChange={(selectedValue: number) => {
+                  setSelectedCategory(selectedValue);
+                  setSkipItems(0);
+                  setBooks([]);
+                  getBooks(
+                    0,
+                    searchTerm,
+                    searchType,
+                    selectedMediaType,
+                    selectedValue,
+                    language
+                  );
+                }}
+              />
+              <LanguageSelection
+                onLanguageChange={(language) => {
+                  setLanguage(language);
+                  setSkipItems(0);
+                  setBooks([]);
+                  getBooks(
+                    0,
+                    searchTerm,
+                    searchType,
+                    selectedMediaType,
+                    selectedCategory,
+                    language
+                  );
+                }}
+                language={language}
+                setLanguage={setLanguage}
+              />
+            </>
+          )}
+
+        </AnimatePresence>
         <IonList>
           {books.length > 0 ? (
             books.map((book: IBook) => {
