@@ -61,13 +61,17 @@ const BookInfo: React.FC = () => {
 
             <IonContent>
                 {bookInfo ? (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexDirection: "column",
 
-                    }}>
+                        }}>
                         <IonCard>
                             <motion.img
                                 style={{
@@ -85,7 +89,11 @@ const BookInfo: React.FC = () => {
 
                             <IonCardContent>
                                 <IonLabel>
-                                    <h1 style={{ textAlign: "center", fontSize: '1.5rem', fontWeight: 'bold' }}>{bookInfo.title}</h1>
+                                    <h1 style={{
+                                        textAlign: "center",
+                                        fontSize: '1.5rem',
+                                        fontWeight: 'bold'
+                                    }}>{bookInfo.title}</h1>
                                 </IonLabel>
                                 <IonLabel>
                                     <p>Autor: {bookInfo.author}</p>
@@ -100,13 +108,10 @@ const BookInfo: React.FC = () => {
                                     <p>Acessos: {bookInfo.accesses}</p>
                                 </IonLabel>
                             </IonCardContent>
-
                             <IonCardContent>
-
                             </IonCardContent>
                         </IonCard>
                         <IonButton
-
                             onClick={() => {
                                 console.log('Implemente a lógica para baixar arquivo com a API do Capacitor.');
                             }}
@@ -115,7 +120,17 @@ const BookInfo: React.FC = () => {
                         </IonButton>
                     </motion.div>
                 ) : (
-                    <p>Carregando...</p>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                textAlign: "center",
+
+                            }}>CARREGANDO</motion.div>
                 )}
             </IonContent>
         </IonPage>
