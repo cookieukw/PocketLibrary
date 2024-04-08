@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { v4 } from 'uuid';
+import React, { useEffect, useState } from "react";
+import "./css/BookInfo.css";
+import { v4 } from "uuid";
 import {
     IonPage,
     IonHeader,
@@ -12,15 +13,36 @@ import {
     IonCardContent,
     IonLabel,
     IonButton,
-} from '@ionic/react';
-import { motion } from 'framer-motion';
-import axios from 'axios';
-import { useParams } from 'react-router';
+    IonLoading,
+    IonIcon
+} from "@ionic/react";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { useParams } from "react-router";
+import { getIcon } from "../classes/util";
+import Lottie from "lottie-react";
+import animation404 from "../lottie/404.json";
 
 const url: string = "https://bpocket.vercel.app/api/book/";
 
+interface IBook {
+    downloadUrl: string;
+    title: string;
+    author: string;
+    category: string;
+    language: string;
+    institutionOrPartner: string;
+    institutionOrProgram: string;
+    knowledgeArea: string;
+    level: string;
+    thesisYear: string;
+    accesses: number;
+    abstract: string;
+}
+
 const BookInfo: React.FC = () => {
-    const [bookInfo, setBookInfo] = useState<any | null>(null);
+    const [bookInfo, setBookInfo] = useState<IBook | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const { bookId } = useParams<{ bookId: string }>();
 
     useEffect(() => {
@@ -28,16 +50,24 @@ const BookInfo: React.FC = () => {
             try {
                 const options = {
                     headers: {
-                        'Cookie': `JSESSIONID=${v4()}`,
-                        'Accept': '/',
+                        Cookie: `JSESSIONID=${v4()}`,
+                        Accept: "/"
                     }
                 };
 
-                const response = await axios.get(`${url}${bookId}`, options);
+                const response = await axios.get<IBook>(
+                    `${url}${bookId}`,
+                    options
+                );
 
                 setBookInfo(response.data);
             } catch (error) {
-                console.error('Ocorreu um erro ao buscar as informações do livro.', error);
+                console.error(
+                    "Ocorreu um erro ao buscar as informações do livro:",
+                    error
+                );
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -45,13 +75,18 @@ const BookInfo: React.FC = () => {
     }, [bookId]);
 
     const downloadHandler = () => {
-        window.open(bookInfo.downloadUrl, '_blank');
+        window.open(bookInfo?.downloadUrl, "_blank");
     };
 
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
+                <IonToolbar
+                    style={{
+                        "--color": "white",
+                        "--background": "#a11b3a"
+                    }}
+                >
                     <IonButtons slot="start">
                         <IonBackButton defaultHref="/home" />
                     </IonButtons>
@@ -59,8 +94,9 @@ const BookInfo: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
 
-            <IonContent>
-                {bookInfo ? (
+            <IonContent className="ion-padding">
+                <IonLoading isOpen={isLoading} message={"Carregando..."} />
+                {bookInfo !== null ? (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -69,68 +105,80 @@ const BookInfo: React.FC = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            flexDirection: "column",
-
-                        }}>
+                            flexDirection: "column"
+                        }}
+                    >
                         <IonCard>
-                            <motion.img
+                            <IonCardContent
                                 style={{
-                                    display: "block",
-                                    height: "300px",
-                                    width: "250px",
-                                    borderRadius: "15px",
-                                    margin: "20px auto"
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center"
                                 }}
-                                src="https://picsum.photos/250/300"
-                                alt="Capa do Livro"
-                                whileHover={{ scale: 1.06 }}
-                                transition={{ duration: 0.3 }}
-                            />
+                            >
+                                <IonIcon
+                                    style={{
+                                        height: "150px",
+                                        width: "100px",
+                                        borderRadius: "15px",
+                                        margin: "20px auto",
+                                        padding: "20px",
+                                        border: "1px solid black",
+                                        color: "black"
+                                    }}
+                                    icon={getIcon(
+                                         "pdf"
+                                    )}
+                                    color="primary"
+                                    size="large"
+                                />
 
-                            <IonCardContent>
                                 <IonLabel>
-                                    <h1 style={{
-                                        textAlign: "center",
-                                        fontSize: '1.5rem',
-                                        fontWeight: 'bold'
-                                    }}>{bookInfo.title}</h1>
+                                    <h1>{bookInfo?.title}</h1>
                                 </IonLabel>
                                 <IonLabel>
-                                    <p>Autor: {bookInfo.author}</p>
+                                    <p>Autor: {bookInfo?.author}</p>
                                 </IonLabel>
                                 <IonLabel>
-                                    <p>Categoria: {bookInfo.category}</p>
+                                    <p>Categoria: {bookInfo?.category}</p>
                                 </IonLabel>
                                 <IonLabel>
-                                    <p>Idioma: {bookInfo.language}</p>
+                                    <p>Idioma: {bookInfo?.language}</p>
                                 </IonLabel>
                                 <IonLabel>
-                                    <p>Acessos: {bookInfo.accesses}</p>
+                                    <p>Acessos: {bookInfo?.accesses}</p>
                                 </IonLabel>
-                            </IonCardContent>
-                            <IonCardContent>
                             </IonCardContent>
                         </IonCard>
                         <IonButton
-                            onClick={() => {
-                                console.log('Implemente a lógica para baixar arquivo com a API do Capacitor.');
+                            onClick={downloadHandler}
+                            style={{
+                                "--background": "#e74c3c",
+                                margin: "20px 0"
                             }}
                         >
-                            Baixar PDF
+                            Baixar conteúdo
                         </IonButton>
                     </motion.div>
                 ) : (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlign: "center",
-
-                            }}>CARREGANDO</motion.div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "80vh"
+                        }}
+                    >
+                        <Lottie
+                            animationData={animation404}
+                            autoplay={true}
+                            loop={true}
+                            style={{ width: "100%", height: "100%" }}
+                        />
+                    </motion.div>
                 )}
             </IonContent>
         </IonPage>
