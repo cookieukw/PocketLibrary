@@ -1,5 +1,5 @@
 import { IonSelect, IonSelectOption, IonLabel } from "@ionic/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface IMediaSelectionMenuProps {
   onMediaTypeChange: (selectedMediaType: number) => void;

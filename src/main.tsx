@@ -31,36 +31,31 @@ setupIonicReact();
 SplashScreen.hide();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <IonReactRouter>
+  // @ts-ignore
+  <IonReactRouter>
+    <IonTabs>
+      <IonRouterOutlet>
+        <Redirect exact path="/" to="/home" />
 
+        <Route path="/home" render={() => <BookList />} exact={true} />
+        <Route
+          path="/bookInfo/:bookId"
+          render={() => <BookInfo />}
+          exact={true}
+        />
+        <Route path="/favorite" render={() => <Favorite />} exact={true} />
+      </IonRouterOutlet>
+      <IonTabBar slot="bottom">
+        <IonTabButton tab="home" href="/home">
+          <IonIcon icon={home} />
+          <IonLabel>Início</IonLabel>
+        </IonTabButton>
 
-        <IonTabs>
-                <IonRouterOutlet>
-            <Redirect exact path="/" to="/home" />
-
-            <Route path="/home" render={() => <BookList />} exact={true} />
-            <Route
-                path="/bookInfo/:bookId"
-                render={() => <BookInfo />}
-                exact={true}
-            />
-            <Route
-                path="/favorite"
-                render={() => <Favorite />}
-                exact={true}
-            />
-        </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/home">
-                    <IonIcon icon={home} />
-                    <IonLabel>Início</IonLabel>
-                </IonTabButton>
-
-                <IonTabButton tab="favorite" href="/favorite">
-                    <IonIcon icon={heart} />
-                    <IonLabel>Favoritos</IonLabel>
-                </IonTabButton>
-            </IonTabBar>
-        </IonTabs>
-    </IonReactRouter>
+        <IonTabButton tab="favorite" href="/favorite">
+          <IonIcon icon={heart} />
+          <IonLabel>Favoritos</IonLabel>
+        </IonTabButton>
+      </IonTabBar>
+    </IonTabs>
+  </IonReactRouter>
 );

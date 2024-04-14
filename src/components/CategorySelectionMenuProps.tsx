@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   IonSelect,
   IonSelectOption,
-  IonLabel,
-  IonItem,
-  IonContent,
-  IonPage,
 } from "@ionic/react";
 
 interface ICategorySelectionMenuProps {

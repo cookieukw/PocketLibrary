@@ -4,4 +4,5 @@
     <string name="title_activity_main">./dist</string>
     <string name="package_name">com.cookie.bpocket</string>
     <string name="custom_url_scheme">com.cookie.bpocket</string>
+    <string name="admob_app_id">0</string>
 </resources>

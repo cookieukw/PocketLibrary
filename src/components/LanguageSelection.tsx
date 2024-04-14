@@ -1,5 +1,4 @@
-import React from "react";
-import { IonSelect, IonSelectOption, IonLabel, IonItem } from "@ionic/react";
+import { IonSelect, IonSelectOption } from "@ionic/react";
 
 interface ILanguageSelectionProps {
   language: number;
@@ -31,21 +30,20 @@ const LanguageSelection: React.FC<ILanguageSelectionProps> = ({
   onLanguageChange,
 }) => {
   return (
-
-      <IonSelect
-        value={language}
-        placeholder="Escolha o idioma"
-        onIonChange={(e: any) => {
-          onLanguageChange(parseInt(e.detail.value));
-          setLanguage(parseInt(e.detail.value));
-        }}
-      >
-        {languageOptions.map((option) => (
-          <IonSelectOption key={option.value} value={option.value}>
-            {option.label}
-          </IonSelectOption>
-        ))}
-      </IonSelect>
+    <IonSelect
+      value={language}
+      placeholder="Escolha o idioma"
+      onIonChange={(e: any) => {
+        onLanguageChange(parseInt(e.detail.value));
+        setLanguage(parseInt(e.detail.value));
+      }}
+    >
+      {languageOptions.map((option) => (
+        <IonSelectOption key={option.value} value={option.value}>
+          {option.label}
+        </IonSelectOption>
+      ))}
+    </IonSelect>
   );
 };
 
