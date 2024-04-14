@@ -37,6 +37,7 @@ import BookItem from "../components/BookItem";
 import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
 import LanguageSelection from "../components/LanguageSelection";
+import AdBanner from "../components/AdBanner";
 import { AnimatePresence, motion } from "framer-motion";
 import { getIcon, toCamelCase } from "../classes/util";
 
@@ -146,9 +147,13 @@ const BookList: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar style={{      
-                textAlign:"center","--color": "white",
-                "--background": "#a11b3a"                    }}>
+                <IonToolbar
+                    style={{
+                        textAlign: "center",
+                        "--color": "white",
+                        "--background": "#a11b3a"
+                    }}
+                >
                     <IonTitle>PocketLibrary</IonTitle>
                 </IonToolbar>
             </IonHeader>
@@ -293,6 +298,7 @@ const BookList: React.FC = () => {
                         />
                     )}
                 </IonList>
+
                 <IonInfiniteScroll
                     disabled={disabled}
                     threshold="10vh"
@@ -320,7 +326,7 @@ const BookList: React.FC = () => {
                         loadingText="Carregando mais..."
                         loadingSpinner="bubbles"
                     ></IonInfiniteScrollContent>
-                </IonInfiniteScroll>
+                </IonInfiniteScroll>                <AdBanner />
             </IonContent>
         </IonPage>
     );

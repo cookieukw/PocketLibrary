@@ -1,7 +1,11 @@
+import { useState, useMemo, useCallback } from "react";
 import { IonItem, IonIcon, IonLabel, IonButton } from "@ionic/react";
+import { useHistory} from "react-router";
 import { motion } from "framer-motion";
 import { getIcon, toCamelCase } from "../classes/util";
-import { useNavigate } from "react-router-dom";
+
+import { heartOutline, heart } from "ionicons/icons";
+import database from "../classes/database";
 
 interface IBook {
     title: string;
@@ -13,13 +17,52 @@ interface IBook {
     link: string;
     bookId: string;
 }
+
 interface BookItemProps {
     book: IBook;
+    onDelete?: () => void;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ book }) => {
+const BookItem: React.FC<BookItemProps> = ({ book ,onDelete}) => {
     const { title, author, font, size, format, link, bookId } = book;
-    const navigate = useNavigate();
+    const navigate = useHistory().push;
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const toggleFavorite = useCallback(() => {
+        const loadData = async () => {
+            if (isFavorite) {
+                await database.favorites
+                    .where("bookId")
+                    .equals(bookId)
+                    .delete();
+                    if(onDelete) onDelete()
+            } else {
+                await database.favorites.add(book);
+            }
+            setIsFavorite(!isFavorite);
+        };
+        loadData();
+    }, [isFavorite, database]);
+    const getToggle = useMemo(() => {
+        const loadData = async () => {
+            try {
+                const data = await database.favorites
+                    .where("bookId")
+                    .equals(bookId)
+                    .toArray();
+
+                if (data.length) {
+                    setIsFavorite(true);
+                } else {
+                    setIsFavorite(false);
+                }
+            } catch (error: any) {
+                setIsFavorite(false);
+            }
+        };
+        loadData();
+    }, []);
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -85,6 +128,9 @@ const BookItem: React.FC<BookItemProps> = ({ book }) => {
                         </IonButton>
                     </div>
                 </IonLabel>
+                <IonButton fill="clear" onClick={toggleFavorite}>
+                    <IonIcon icon={isFavorite ? heart : heartOutline} />
+                </IonButton>
             </IonItem>
         </motion.div>
     );
