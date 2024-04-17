@@ -28,7 +28,7 @@ import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
 import LanguageSelection from "../components/LanguageSelection";
 import { AnimatePresence, motion } from "framer-motion";
-import { initializeADS, interstitial } from "../classes/util";
+import { initializeADS /*interstitial*/ } from "../classes/util";
 
 interface IBook {
   title: string;
@@ -137,11 +137,11 @@ const BookList: React.FC = () => {
     })();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     (async () => {
       await interstitial();
     })();
-  });
+  });*/
   return (
     <IonPage>
       <IonHeader>
