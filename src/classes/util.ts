@@ -6,13 +6,14 @@ import {
   playOutline,
 } from "ionicons/icons";
 
-import {
+/*import {
   AdmobConsentStatus,
   AdMob,
   AdOptions,
   AdLoadInfo,
   InterstitialAdPluginEvents,
 } from "@capacitor-community/admob";
+*/
 
 export const toCamelCase = (text: string): string => {
   return text
@@ -49,7 +50,7 @@ export const getIcon = (format: string) => {
 };
 
 export async function initializeADS(): Promise<void> {
-  await AdMob.initialize();
+  /* await AdMob.initialize();
 
   const [trackingInfo, consentInfo] = await Promise.all([
     AdMob.trackingAuthorizationStatus(),
@@ -57,7 +58,7 @@ export async function initializeADS(): Promise<void> {
   ]);
 
   if (trackingInfo.status === "notDetermined") {
-    /**
+    **
      * If you want to explain TrackingAuthorization before showing the iOS dialog,
      * you can show the modal here.
      * ex)
@@ -66,7 +67,7 @@ export async function initializeADS(): Promise<void> {
      * });
      * await modal.present();
      * await modal.onDidDismiss();  // Wait for close modal
-     **/
+     **
 
     await AdMob.requestTrackingAuthorization();
   }
@@ -93,4 +94,6 @@ export async function interstitial(): Promise<void> {
   };
   await AdMob.prepareInterstitial(options);
   await AdMob.showInterstitial();
+  
+  */
 }

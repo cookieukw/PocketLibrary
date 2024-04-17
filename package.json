@@ -15,7 +15,6 @@
     "build-release": "npx cap build android --keystorepath=C:\\Users\\rcnma\\OneDrive\\Documentos\\debug.keystore --keystorepass=android --keystorealias=androiddebugkey --keystorealiaspass=android --androidreleasetype=APK && npx cap build android --keystorepath=C:\\Users\\rcnma\\OneDrive\\Documentos\\debug.keystore --keystorepass=android --keystorealias=androiddebugkey --keystorealiaspass=android --androidreleasetype=AAB"
   },
   "dependencies": {
-    "@capacitor-community/admob": "5.3.1",
     "@capacitor/android": "5.7.4",
     "@capacitor/core": "5.7.4",
     "@capacitor/filesystem": "5.2.1",
