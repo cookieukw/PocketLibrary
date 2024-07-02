@@ -23,9 +23,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
-}
-
- signingConfigs {
+     signingConfigs {
         release {
             storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
             storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
@@ -33,6 +31,9 @@ android {
             keyPassword System.getenv("ANDROID_KEY_PASSWORD")
         }
     }
+}
+
+
 repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
