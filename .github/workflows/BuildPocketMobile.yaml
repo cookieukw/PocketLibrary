@@ -80,7 +80,7 @@ jobs:
            echo "Conteúdo do diretório de AABs:"
            ls -al "${{ github.workspace }}/android/app/build/outputs/bundle/release"
            cd "${{ github.workspace }}/android/app/build/outputs/bundle/release"
-           for aab in *.aab; d
+           for aab in *.aab; do
             apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "${aab%.aab}-signed.aab" $aab
            done
            ./gradlew assembleRelease --stacktrace
