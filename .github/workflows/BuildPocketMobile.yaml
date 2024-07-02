@@ -68,7 +68,7 @@ jobs:
       - name: Install apksigner
         run: sudo apt update && sudo apt install -y apksigner
 
-      - name: Build Android
+      - name: Build APK and AAB
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/cookie.keystore
           ANDROID_KEYSTORE_PASSWORD: cookieukw
@@ -76,12 +76,17 @@ jobs:
           ANDROID_KEY_PASSWORD: cookieukw
         run: |
           cd ${{ github.workspace }}/android
-           ./gradlew bundleRelease --stacktrace 
-           apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "app-release-signed.aab" app-release.aab
+           ./gradlew bundleRelease --stacktrace
+           echo "Conteúdo do diretório de AABs:"
+           ls -al "${{ github.workspace }}/android/app/build/outputs/bundle/release"
+           cd "${{ github.workspace }}/android/app/build/outputs/bundle/release"
+           for aab in *.aab; d
+            apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "${aab%.aab}-signed.aab" $aab
+           done
            ./gradlew assembleRelease --stacktrace
            echo "Conteúdo do diretório de APKs:"
-           ls -al app/build/outputs/apk/release
-           cd app/build/outputs/apk/release
+           ls -al "${{ github.workspace }}/android/app/build/outputs/apk/release"
+           cd "${{ github.workspace }}/android/app/build/outputs/apk/release"
            for apk in *.apk; do
              apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "${apk%.apk}-signed.apk" $apk
            done
