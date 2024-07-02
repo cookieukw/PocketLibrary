@@ -43,10 +43,6 @@ jobs:
       - name: Decode Keystore from Base64
         run: echo "${{ secrets.COOKIE_KEY }}" | base64 --decode > ${{ github.workspace }}/cookie.keystore
 
-      # - name: Create Debug Keystore
-      #run: |
-      #  keytool -genkeypair -v -keystore ${{ github.workspace }}/cookiekeystore -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US" -alias androiddebugkey
-
       - name: Find Debug Keystore
         run: |
           debug_keystore_path="${{ github.workspace }}/cookie.keystore"
@@ -75,44 +71,9 @@ jobs:
           ANDROID_KEY_ALIAS: cookieukw
           ANDROID_KEY_PASSWORD: cookieukw
         run: |
-          cd ${{ github.workspace }}/android
-           ./gradlew bundleRelease --stacktrace
-           echo "Conteúdo do diretório de AABs:"
-           ls -al "${{ github.workspace }}/android/app/build/outputs/bundle/release"
-           cd "${{ github.workspace }}/android/app/build/outputs/bundle/release"
-           for aab in *.aab; do
-            apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "${aab%.aab}-signed.aab" $aab
-           done
-           ./gradlew assembleRelease --stacktrace
-           echo "Conteúdo do diretório de APKs:"
-           ls -al "${{ github.workspace }}/android/app/build/outputs/apk/release"
-           cd "${{ github.workspace }}/android/app/build/outputs/apk/release"
-           for apk in *.apk; do
-             apksigner sign --v2-signing-enabled true --ks $ANDROID_KEYSTORE_PATH --ks-pass pass:$ANDROID_KEYSTORE_PASSWORD --ks-key-alias $ANDROID_KEY_ALIAS --key-pass pass:$ANDROID_KEY_PASSWORD --out "${apk%.apk}-signed.apk" $apk
-           done
-
-        # Comente ou remova as linhas npx cap buil
-        # npx cap build android --keystorepath=$ANDROID_KEYSTORE_PATH --keystorepass=$ANDROID_KEYSTORE_PASSWORD --keystorealias=$ANDROID_KEY_ALIAS --keystorealiaspass=$ANDROID_KEY_PASSWORD --androidreleasetype=AAB
-        # npx cap build android --keystorepath=$ANDROID_KEYSTORE_PATH --keystorepass=$ANDROID_KEYSTORE_PASSWORD --keystorealias=$ANDROID_KEY_ALIAS --keystorealiaspass=$ANDROID_KEY_PASSWORD --androidreleasetype=APK
-
-      #- name: Upload Release Build to Artifacts
-
-      #uses: actions/upload-artifact@v3
-      #with:
-      # name: release-artifacts
-      #path: |
-      # ${{ github.workspace }}/android/app/build/outputs/bundle/release/*.aab
-      #${{ github.workspace }}/android/app/build/outputs/apk/release/*.apk
-
-      #    - name: Release with Notes
-      #     uses: softprops/action-gh-release@v1
-      #    with:
-      #     files: |
-      #      ${{ github.workspace }}/android/app/build/outputs/bundle/release/*.aab
-      #     ${{ github.workspace }}/android/app/build/outputs/apk/release/*.apk
-
-      #env:
-      # GITHUB_TOKEN: ${{ secrets.POCKET }}
+           cd android
+          ./gradlew bundleRelease
+          ./gradlew assembleRelease
 
       - name: Create draft release
         uses: softprops/action-gh-release@v1

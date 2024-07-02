@@ -20,10 +20,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
 
+ signingConfigs {
+        release {
+            storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("ANDROID_KEY_ALIAS")
+            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+        }
+    }
 repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
