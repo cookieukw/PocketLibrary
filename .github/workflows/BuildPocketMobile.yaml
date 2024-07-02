@@ -72,8 +72,8 @@ jobs:
           ANDROID_KEY_PASSWORD: cookieukw
         run: |
            cd android
-          ./gradlew bundleRelease
-          ./gradlew assembleRelease
+           ./gradlew bundleRelease
+           ./gradlew assembleRelease
 
       - name: Create draft release
         uses: softprops/action-gh-release@v1
