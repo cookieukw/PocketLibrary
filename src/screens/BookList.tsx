@@ -16,6 +16,7 @@ import {
   IonSelectOption,
   IonHeader,
   IonToolbar,
+  
 } from "@ionic/react";
 
 import axios from "axios";
@@ -136,7 +137,7 @@ const BookList: React.FC = () => {
       await initializeADS();
     })();
   }, []);
-
+ 
   /* useEffect(() => {
     (async () => {
       await interstitial();
@@ -278,7 +279,7 @@ const BookList: React.FC = () => {
         </AnimatePresence>
         <IonList>
           {books.length > 0 ? (
-            books.map((book: IBook, index: number) => {
+            books.map((book: IBook) => {
               return <BookItem book={book} key={book.bookId} />;
             })
           ) : (

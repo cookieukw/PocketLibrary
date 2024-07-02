@@ -6,7 +6,7 @@ import {
   IonTitle,
   IonContent,
   IonList,
-  IonText,
+
   useIonViewWillEnter,
 } from "@ionic/react";
 import Lottie from "lottie-react";
@@ -31,19 +31,14 @@ const Favorite: React.FC = () => {
     const fetchData = async () => {
       const favBooks = await db.favorites.toArray();
       setBooks(favBooks);
+      console.log({ favBooks });
     };
     fetchData();
   }, [db]);
+
   useIonViewWillEnter(() => {
     fetchFavorites();
   });
-  const removeFromFavorites = async (bookId: string) => {
-    await db.favorites.where("bookId").equals(bookId).delete();
-    const updatedFavorites = books.filter(
-      (book: IBook) => book.bookId !== bookId
-    );
-    setBooks(updatedFavorites);
-  };
 
   return (
     <IonPage>
@@ -60,26 +55,25 @@ const Favorite: React.FC = () => {
                 <BookItem
                   book={book}
                   key={book.bookId}
+                  favorite={true}
                   onDelete={() => {
                     setBooks((prevBooks) =>
                       prevBooks.filter(
                         (deleteBook: IBook) => deleteBook.bookId !== book.bookId
                       )
                     );
+                    console.log(books.length);
                   }}
                 />
               );
             })
           ) : (
-            <IonContent>
-              <Lottie
-                animationData={animation404}
-                autoplay={true}
-                loop={true}
-                style={{ width: "100%", height: "100%" }}
-              />
-              <IonText>Nada encontrado</IonText>
-            </IonContent>
+            <Lottie
+              animationData={animation404}
+              autoplay={true}
+              loop={true}
+              style={{ width: "100%", height: "100%" }}
+            />
           )}
         </IonList>
       </IonContent>

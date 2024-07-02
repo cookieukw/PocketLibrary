@@ -1,5 +1,11 @@
-import { useState, useMemo, useCallback } from "react";
-import { IonItem, IonIcon, IonLabel, IonButton } from "@ionic/react";
+import { useEffect, useState } from "react";
+import {
+  IonItem,
+  IonIcon,
+  IonLabel,
+  IonButton,
+  useIonViewWillEnter,
+} from "@ionic/react";
 import { useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { getIcon, toCamelCase } from "../classes/util";
@@ -21,52 +27,59 @@ interface IBook {
 interface BookItemProps {
   book: IBook;
   onDelete?: () => void;
+  favorite?: boolean;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ book, onDelete }) => {
+const BookItem: React.FC<BookItemProps> = ({ book, onDelete, favorite }) => {
   const { title, author, font, size, format, link, bookId } = book;
   const navigate = useHistory().push;
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(favorite ?? false);
 
-  const toggleFavorite = useCallback(() => {
-    const loadData = async () => {
-      if (isFavorite) {
-        await database.favorites.where("bookId").equals(bookId).delete();
-        if (onDelete) onDelete();
-      } else {
-        await database.favorites.add(book);
+  const toggleFavorite = async () => {
+    if (isFavorite) {
+      await database.favorites.where("bookId").equals(bookId).delete();
+    } else {
+      await database.favorites.add(book);
+    }
+    setIsFavorite(!isFavorite);
+  };
+
+  const checkIfFavorite = async () => {
+    try {
+      const existingBook = await database.favorites
+        .where("bookId")
+        .equals(bookId)
+        .first();
+      if (existingBook) {
+        setIsFavorite(true);
       }
-      setIsFavorite(!isFavorite);
-    };
-    loadData();
-  }, [isFavorite, database]);
-  const getToggle = useMemo(() => {
-    const loadData = async () => {
-      try {
-        const data = await database.favorites
-          .where("bookId")
-          .equals(bookId)
-          .toArray();
+    } catch (error) {
+      setIsFavorite(false);
 
-        if (data.length) {
-          setIsFavorite(true);
-        } else {
-          setIsFavorite(false);
-        }
-      } catch (error: any) {
-        setIsFavorite(false);
-      }
-    };
-    loadData();
-  }, []);
+      console.error("Error checking if book is favorite:", error);
+    }
+  };
 
+  useIonViewWillEnter(() => {
+    {
+      (async () => {
+        await checkIfFavorite();
+      })();
+    }
+  });
+
+  useEffect(() => {
+    (async () => {
+      await checkIfFavorite();
+    })();
+  });
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <IonItem key={bookId} >
+      <IonItem key={bookId}>
         <IonIcon
           style={{
             height: "140px",
@@ -115,15 +128,19 @@ const BookItem: React.FC<BookItemProps> = ({ book, onDelete }) => {
               </a>
             </p>
             <IonButton
-              onClick={() =>
-                navigate(`/bookInfo/${bookId}`, { book })
-              }
+              onClick={() => navigate(`/bookInfo/${bookId}`, { book })}
             >
               Ver mais sobre o livro
             </IonButton>
           </div>
         </IonLabel>
-        <IonButton fill="clear" onClick={toggleFavorite}>
+        <IonButton
+          fill="clear"
+          onClick={() => {
+            toggleFavorite();
+            if (onDelete) onDelete();
+          }}
+        >
           <IonIcon icon={isFavorite ? heart : heartOutline} />
         </IonButton>
       </IonItem>
