@@ -13,6 +13,7 @@ import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
 import BookItem from "../components/BookItem";
 import db from "../classes/database";
+import { useHistory } from "react-router";
 
 interface IBook {
   title: string;
@@ -26,7 +27,8 @@ interface IBook {
 }
 const Favorite: React.FC = () => {
   const [books, setBooks] = useState<IBook[]>([]);
-
+  const navigate = useHistory().push;
+  
   const fetchFavorites = useCallback(() => {
     const fetchData = async () => {
       const favBooks = await db.favorites.toArray();
@@ -40,10 +42,21 @@ const Favorite: React.FC = () => {
     fetchFavorites();
   });
 
+   document.addEventListener("ionBackButton", (ev) => {
+     //@ts-ignore
+     ev.detail.register(10, () => {
+       navigate("/home");
+     });
+   });
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar
+          style={{
+            "--color": "white",
+            "--background": "#a11b3a",
+          }}
+        >
           <IonTitle>Favoritos</IonTitle>
         </IonToolbar>
       </IonHeader>

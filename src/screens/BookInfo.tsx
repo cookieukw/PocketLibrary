@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./css/BookInfo.css";
 import { v4 } from "uuid";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { heartOutline, heart } from "ionicons/icons";
 import {
   IonPage,
@@ -62,6 +62,7 @@ const BookInfo: React.FC = () => {
   const location = useLocation();
   const { state } = location;
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useHistory().push;
 
   //@ts-ignore
   const bookContent: IBookContent | undefined = state?.book;
@@ -132,6 +133,13 @@ const BookInfo: React.FC = () => {
         checkIfFavorite();
       })();
     }
+  });
+
+  document.addEventListener("ionBackButton", (ev) => {
+    //@ts-ignore
+    ev.detail.register(10, () => {
+      navigate("/home");
+    });
   });
   return (
     <IonPage>

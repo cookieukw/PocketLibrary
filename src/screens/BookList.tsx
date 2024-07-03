@@ -16,7 +16,6 @@ import {
   IonSelectOption,
   IonHeader,
   IonToolbar,
-  
 } from "@ionic/react";
 
 import axios from "axios";
@@ -30,6 +29,7 @@ import animation404 from "../lottie/404.json";
 import LanguageSelection from "../components/LanguageSelection";
 import { AnimatePresence, motion } from "framer-motion";
 import { initializeADS /*interstitial*/ } from "../classes/util";
+import { useHistory } from "react-router";
 
 interface IBook {
   title: string;
@@ -58,7 +58,14 @@ const BookList: React.FC = () => {
   const [language, setLanguage] = useState<number>(1);
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
+  const navigate = useHistory().push;
 
+  document.addEventListener("ionBackButton", (ev) => {
+    //@ts-ignore
+    ev.detail.register(10, () => {
+      navigate("/home");
+    });
+  });
   const getBooks = useCallback(
     async (
       skipItems: number,
@@ -137,7 +144,7 @@ const BookList: React.FC = () => {
       await initializeADS();
     })();
   }, []);
- 
+
   /* useEffect(() => {
     (async () => {
       await interstitial();
