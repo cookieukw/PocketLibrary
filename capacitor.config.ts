@@ -2,10 +2,9 @@ import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.cookie.bpocket",
-  appName: "Biblioteca Pocket",
+  appName: "PocketLibrary",
   webDir: "dist",
   server: {
-    hostname: "http://localhost:5174",
     androidScheme: "https",
   },
 };
