@@ -16,6 +16,7 @@ import {
   IonSelectOption,
   IonHeader,
   IonToolbar,
+  useIonRouter,
 } from "@ionic/react";
 
 import axios from "axios";
@@ -28,8 +29,7 @@ import Lottie from "lottie-react";
 import animation404 from "../lottie/404.json";
 import LanguageSelection from "../components/LanguageSelection";
 import { AnimatePresence, motion } from "framer-motion";
-import { initializeADS /*interstitial*/ } from "../classes/util";
-import { useHistory } from "react-router";
+import { initializeADS } from "../classes/util";
 
 interface IBook {
   title: string;
@@ -58,14 +58,8 @@ const BookList: React.FC = () => {
   const [language, setLanguage] = useState<number>(1);
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
-  const navigate = useHistory().push;
+  const ionRouter: any = useIonRouter();
 
-  document.addEventListener("ionBackButton", (ev) => {
-    //@ts-ignore
-    ev.detail.register(10, () => {
-      navigate("/home");
-    });
-  });
   const getBooks = useCallback(
     async (
       skipItems: number,
@@ -126,7 +120,7 @@ const BookList: React.FC = () => {
     // console.log("change search");
     setDisabled(false);
     if (value.length < 4) return;
-    setSearchTerm(value);
+    //setSearchTerm(value);
     setSkipItems(0);
     setBooks([]);
     getBooks(
@@ -145,11 +139,13 @@ const BookList: React.FC = () => {
     })();
   }, []);
 
-  /* useEffect(() => {
-    (async () => {
-      await interstitial();
-    })();
-  });*/
+  document.addEventListener("ionBackButton", (ev: any) => {
+    ev.detail.register(-1, () => {
+      if (!ionRouter.canGoBack()) {
+        ionRouter.goBack();
+      }
+    });
+  });
   return (
     <IonPage>
       <IonHeader>
@@ -166,7 +162,10 @@ const BookList: React.FC = () => {
       <IonContent fullscreen>
         <IonSearchbar
           value={searchTerm}
-          onIonInput={(e) => handleSearchDebounced(e.detail.value!)}
+          onIonInput={(e) => {
+            setSearchTerm(e.detail.value!);
+            handleSearchDebounced(e.detail.value!);
+          }}
           onIonClear={() => {
             setSearchTerm("");
             setSkipItems(0);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./css/BookInfo.css";
 import { v4 } from "uuid";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { heartOutline, heart } from "ionicons/icons";
 import {
   IonPage,
@@ -62,7 +62,6 @@ const BookInfo: React.FC = () => {
   const location = useLocation();
   const { state } = location;
   const [isFavorite, setIsFavorite] = useState(false);
-  const navigate = useHistory().push;
 
   //@ts-ignore
   const bookContent: IBookContent | undefined = state?.book;
@@ -135,12 +134,6 @@ const BookInfo: React.FC = () => {
     }
   });
 
-  document.addEventListener("ionBackButton", (ev) => {
-    //@ts-ignore
-    ev.detail.register(10, () => {
-      navigate("/home");
-    });
-  });
   return (
     <IonPage>
       <IonHeader>
@@ -192,58 +185,62 @@ const BookInfo: React.FC = () => {
                   icon={getIcon(bookContent?.format ?? "pdf")}
                   color="primary"
                   size="large"
-                />
-
-                <IonLabel>
-                  <h1>{bookInfo?.title}</h1>
-                </IonLabel>
-                <IonLabel>
-                  <p>Autor: {toCamelCase(bookInfo?.author)}</p>
-                </IonLabel>
-                <IonLabel>
-                  <p>Categoria: {bookInfo?.category ?? "indisponível"}</p>
-                </IonLabel>
-                <IonLabel>
-                  <p>Idioma: {bookInfo?.language ?? "indisponível"}</p>
-                </IonLabel>
-                <IonLabel>
-                  <p>Acessos: {bookInfo?.accesses ?? "indisponível"}</p>
-                </IonLabel>
-                {bookContent && (
-                  <>
+                />{" "}
+                <IonCardContent style={{ display: "flex" }}>
+                  <IonCardContent>
                     <IonLabel>
-                      <p>Fonte: {bookContent.font ?? "indisponível"}</p>
+                      <h1>{bookInfo?.title}</h1>
                     </IonLabel>
                     <IonLabel>
-                      <p>Tamanho: {bookContent.size ?? "indisponível"}</p>
+                      <p>Autor: {toCamelCase(bookInfo?.author)}</p>
                     </IonLabel>
                     <IonLabel>
-                      <p>
-                        Formato:{" "}
-                        {bookContent?.format.substring(1).toUpperCase() ??
-                          "indisponível"}
-                      </p>
+                      <p>Categoria: {bookInfo?.category ?? "indisponível"}</p>
                     </IonLabel>
                     <IonLabel>
-                      <p>
-                        Link original:{" "}
-                        <a
-                          href={bookContent.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Saiba mais
-                        </a>
-                      </p>
+                      <p>Idioma: {bookInfo?.language ?? "indisponível"}</p>
                     </IonLabel>
-                  </>
-                )}
-                <IonLabel>
-                  <IonIcon
-                    icon={isFavorite ? heart : heartOutline}
-                    onClick={toggleFavorite}
-                  />
-                </IonLabel>
+                    <IonLabel>
+                      <p>Acessos: {bookInfo?.accesses ?? "indisponível"}</p>
+                    </IonLabel>
+                    {bookContent && (
+                      <>
+                        <IonLabel>
+                          <p>Fonte: {bookContent.font ?? "indisponível"}</p>
+                        </IonLabel>
+                        <IonLabel>
+                          <p>Tamanho: {bookContent.size ?? "indisponível"}</p>
+                        </IonLabel>
+                        <IonLabel>
+                          <p>
+                            Formato:{" "}
+                            {bookContent?.format.substring(1).toUpperCase() ??
+                              "indisponível"}
+                          </p>
+                        </IonLabel>
+                        <IonLabel>
+                          <p>
+                            Link original:{" "}
+                            <a
+                              href={bookContent.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Saiba mais
+                            </a>
+                          </p>
+                        </IonLabel>
+                      </>
+                    )}
+                  </IonCardContent>
+                  <IonCardContent style={{ padding: "16px" }}>
+                    <IonIcon
+                      size={"large"}
+                      icon={isFavorite ? heart : heartOutline}
+                      onClick={toggleFavorite}
+                    />
+                  </IonCardContent>
+                </IonCardContent>
               </IonCardContent>
             </IonCard>
             <IonButton
