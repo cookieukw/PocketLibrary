@@ -1,20 +1,20 @@
 import ReactDOM from "react-dom/client";
 import { setupIonicReact } from "@ionic/react";
 import {
-    IonTabs,
-    IonTabBar,
-    IonTabButton,
-    IonIcon,
-    IonLabel,
-    IonRouterOutlet
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonRouterOutlet,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router";
-
+import "./main.css";
 import BookList from "./screens/BookList";
 import Favorite from "./screens/Favorite";
 import BookInfo from "./screens/BookInfo";
-import { heart, home } from "ionicons/icons";
+import { heart, home, constructOutline } from "ionicons/icons";
 import { SplashScreen } from "@capacitor/splash-screen";
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -26,7 +26,7 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-
+import Config from "./screens/Config";
 setupIonicReact();
 SplashScreen.hide();
 
@@ -44,6 +44,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           exact={true}
         />
         <Route path="/favorite" render={() => <Favorite />} exact={true} />
+        <Route path="/config" render={() => <Config />} exact={true} />
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="home" href="/home">
@@ -54,6 +55,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <IonTabButton tab="favorite" href="/favorite">
           <IonIcon icon={heart} />
           <IonLabel>Favoritos</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="/config" href="/config">
+          <IonIcon icon={constructOutline} />
+          <IonLabel>Configurações</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

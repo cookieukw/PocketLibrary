@@ -134,6 +134,10 @@ const BookInfo: React.FC = () => {
     }
   });
 
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    document.body.classList.toggle("dark", prefersDark.matches);
+  }, []);
   return (
     <IonPage>
       <IonHeader>
@@ -179,62 +183,65 @@ const BookInfo: React.FC = () => {
                     borderRadius: "15px",
                     margin: "20px auto",
                     padding: "20px",
-                    border: "1px solid black",
-                    color: "black",
+                    border: "1px solid",
                   }}
                   icon={getIcon(bookContent?.format ?? "pdf")}
                   color="primary"
                   size="large"
                 />{" "}
-                <IonCardContent style={{ display: "flex" }}>
-                  <IonCardContent>
+                <IonCardContent>
+                  <IonCardContent
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <IonLabel
+                      style={{
+                        marginBottom: "10px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        textAlign: "center",
+                      }}
+                    >
+                      {bookInfo?.title}
+                    </IonLabel>
+                    <IonLabel>Autor: {toCamelCase(bookInfo?.author)}</IonLabel>
                     <IonLabel>
-                      <h1>{bookInfo?.title}</h1>
+                      Categoria: {bookInfo?.category ?? "indisponível"}
                     </IonLabel>
                     <IonLabel>
-                      <p>Autor: {toCamelCase(bookInfo?.author)}</p>
+                      Idioma: {bookInfo?.language ?? "indisponível"}
                     </IonLabel>
                     <IonLabel>
-                      <p>Categoria: {bookInfo?.category ?? "indisponível"}</p>
-                    </IonLabel>
-                    <IonLabel>
-                      <p>Idioma: {bookInfo?.language ?? "indisponível"}</p>
-                    </IonLabel>
-                    <IonLabel>
-                      <p>Acessos: {bookInfo?.accesses ?? "indisponível"}</p>
+                      Acessos: {bookInfo?.accesses ?? "indisponível"}
                     </IonLabel>
                     {bookContent && (
                       <>
                         <IonLabel>
-                          <p>Fonte: {bookContent.font ?? "indisponível"}</p>
+                          Fonte: {bookContent.font ?? "indisponível"}
                         </IonLabel>
                         <IonLabel>
-                          <p>Tamanho: {bookContent.size ?? "indisponível"}</p>
+                          Tamanho: {bookContent.size ?? "indisponível"}
                         </IonLabel>
                         <IonLabel>
-                          <p>
-                            Formato:{" "}
-                            {bookContent?.format.substring(1).toUpperCase() ??
-                              "indisponível"}
-                          </p>
+                          Formato:{" "}
+                          {bookContent?.format.substring(1).toUpperCase() ??
+                            "indisponível"}
                         </IonLabel>
                         <IonLabel>
-                          <p>
-                            Link original:{" "}
-                            <a
-                              href={bookContent.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Saiba mais
-                            </a>
-                          </p>
+                          Link original:{" "}
+                          <a
+                            href={bookContent.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Saiba mais
+                          </a>
                         </IonLabel>
                       </>
                     )}
                   </IonCardContent>
-                  <IonCardContent style={{ padding: "16px" }}>
+                  <IonCardContent style={{ padding: "16px", display: "flex" }}>
                     <IonIcon
+                      style={{ margin: "auto" }}
                       size={"large"}
                       icon={isFavorite ? heart : heartOutline}
                       onClick={toggleFavorite}

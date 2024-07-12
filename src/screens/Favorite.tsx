@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   IonPage,
   IonHeader,
@@ -39,6 +39,10 @@ const Favorite: React.FC = () => {
     fetchFavorites();
   });
 
+   useEffect(() => {
+     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+     document.body.classList.toggle("dark", prefersDark.matches);
+   }, []);
   return (
     <IonPage>
       <IonHeader>

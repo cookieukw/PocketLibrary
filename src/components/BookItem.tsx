@@ -5,6 +5,7 @@ import {
   IonLabel,
   IonButton,
   useIonViewWillEnter,
+  IonText,
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { motion } from "framer-motion";
@@ -85,48 +86,51 @@ const BookItem: React.FC<BookItemProps> = ({ book, onDelete, favorite }) => {
             height: "140px",
             width: "140px",
             margin: "15px",
-            border: "1px solid black",
+            border: "1px solid",
             padding: "10px",
-            color: "black",
           }}
           icon={getIcon(format.substring(1))}
         />
         <IonLabel>
-          <h2
+          <IonText
             style={{
               fontWeight: "bold",
               textTransform: "capitalize",
             }}
           >
+            {" "}
             {title}
-          </h2>
+          </IonText>
+
           <div
             style={{
               border: "1px solid #ccc",
               padding: "8px",
               marginBottom: "8px",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <p>
+            <IonText>
               <strong>Autor: </strong> {toCamelCase(author)}
-            </p>
-            <p>
+            </IonText>
+            <IonText>
               <strong>Fonte: </strong>
               {font.charAt(0).toUpperCase() + font.slice(1)}
-            </p>
-            <p>
+            </IonText>
+            <IonText>
               <strong>Tamanho:</strong> {size}
-            </p>
-            <p>
+            </IonText>
+            <IonText>
               <strong>Formato: </strong>
               {format.substring(1).toUpperCase()}
-            </p>
-            <p>
+            </IonText>
+            <IonText>
               <strong>Link original: </strong>
               <a href={link} target="_blank" rel="noopener noreferrer">
                 Saiba mais
               </a>
-            </p>
+            </IonText>
             <IonButton
               onClick={() => navigate(`/bookInfo/${bookId}`, { book })}
             >

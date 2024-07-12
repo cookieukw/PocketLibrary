@@ -17,6 +17,7 @@ import {
   IonHeader,
   IonToolbar,
   useIonRouter,
+  IonText,
 } from "@ionic/react";
 
 import axios from "axios";
@@ -146,6 +147,11 @@ const BookList: React.FC = () => {
       }
     });
   });
+
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    document.body.classList.toggle("dark", prefersDark.matches);
+  }, []);
   return (
     <IonPage>
       <IonHeader>
@@ -182,7 +188,7 @@ const BookList: React.FC = () => {
         ></IonSearchbar>
         <div className="flex">
           <IonIcon icon={alert} />
-          <p> Digite no mínimo 4 caracteres</p>
+          <IonText>Digite no mínimo 4 caracteres</IonText>
         </div>
         <motion.div
           initial={{ opacity: 0 }}
@@ -201,7 +207,10 @@ const BookList: React.FC = () => {
             whileTap={{ scale: 0.9 }}
             onClick={() => setShowCategories(!showCategories)}
           >
-            {showCategories ? "Esconder Categorias" : "Mostrar Categorias"}
+            {" "}
+            <IonText color="secondary">
+              {showCategories ? "Esconder Categorias" : "Mostrar Categorias"}
+            </IonText>
           </motion.button>
         </motion.div>
 
