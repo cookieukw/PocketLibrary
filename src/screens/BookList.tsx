@@ -47,7 +47,7 @@ const url: string = "https://bpocket.vercel.app/api/books";
 //const url: string = "http://localhost:3000/api/books";
 
 const BookList: React.FC = () => {
-  console.log(0);
+  //console.log(0);
   const [skipItems, setSkipItems] = useState<number>(0);
   const [itemsSize] = useState<number>(10);
   const [books, setBooks] = useState<IBook[]>([]);
@@ -149,19 +149,15 @@ const BookList: React.FC = () => {
   });
 
   useEffect(() => {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-    document.body.classList.toggle("dark", prefersDark.matches);
+    const isDark = localStorage.getItem("darkMode") === "true";
+
+    document.documentElement.classList.toggle("ion-palette-dark", isDark);
   }, []);
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar
-          style={{
-            textAlign: "center",
-            "--color": "white",
-            "--background": "#a11b3a",
-          }}
-        >
+        <IonToolbar>
           <IonTitle>PocketLibrary</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -30,7 +30,6 @@ const Favorite: React.FC = () => {
     const fetchData = async () => {
       const favBooks = await db.favorites.toArray();
       setBooks(favBooks);
-      console.log({ favBooks });
     };
     fetchData();
   }, [db]);
@@ -39,19 +38,14 @@ const Favorite: React.FC = () => {
     fetchFavorites();
   });
 
-   useEffect(() => {
-     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-     document.body.classList.toggle("dark", prefersDark.matches);
-   }, []);
+  useEffect(() => {
+    const isDark = localStorage.getItem("darkMode") === "true";
+    document.documentElement.classList.toggle("ion-palette-dark", isDark);
+  }, []);
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar
-          style={{
-            "--color": "white",
-            "--background": "#a11b3a",
-          }}
-        >
+        <IonToolbar>
           <IonTitle>Favoritos</IonTitle>
         </IonToolbar>
       </IonHeader>

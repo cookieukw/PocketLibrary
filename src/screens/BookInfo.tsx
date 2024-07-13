@@ -135,18 +135,13 @@ const BookInfo: React.FC = () => {
   });
 
   useEffect(() => {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-    document.body.classList.toggle("dark", prefersDark.matches);
+    const isDark = localStorage.getItem("darkMode") === "true";
+    document.documentElement.classList.toggle("ion-palette-dark", isDark);
   }, []);
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar
-          style={{
-            "--color": "white",
-            "--background": "#a11b3a",
-          }}
-        >
+        <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
