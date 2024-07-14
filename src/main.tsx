@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IonReactRouter>
     <IonTabs>
       <IonRouterOutlet>
-        <Redirect exact path="*" to="/home" />
+        <Redirect exact path="/" to="/home" />
         <Route path="/home" render={() => <BookList />} />
         <Route path="/bookInfo/:bookId" render={() => <BookInfo />} />
         <Route path="/favorite" render={() => <Favorite />} />
