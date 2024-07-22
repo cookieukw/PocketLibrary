@@ -6,12 +6,18 @@ import {
   IonButton,
   useIonViewWillEnter,
   IonText,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonTitle,
+  IonModal,
+  IonContent,
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { getIcon, toCamelCase } from "../classes/util";
 
-import { heartOutline, heart } from "ionicons/icons";
+import { heartOutline, heart, informationCircleOutline } from "ionicons/icons";
 import database from "../classes/database";
 
 interface IBook {
@@ -31,11 +37,13 @@ interface BookItemProps {
   favorite?: boolean;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ book, onDelete, favorite }) => {
+const BookItem: React.FC<BookItemProps> = ({ book, favorite }) => {
   const { title, author, font, size, format, link, bookId } = book;
   const navigate = useHistory().push;
   const [isFavorite, setIsFavorite] = useState(favorite ?? false);
+  const [showModal, setShowModal] = useState(false);
 
+  const closeModal = () => setShowModal(false);
   const toggleFavorite = async () => {
     if (isFavorite) {
       await database.favorites.where("bookId").equals(bookId).delete();
@@ -80,74 +88,118 @@ const BookItem: React.FC<BookItemProps> = ({ book, onDelete, favorite }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <IonItem key={bookId}>
+      <IonItem
+        key={bookId}
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          borderRadius: "8px",
+        }}
+      >
         <IonIcon
           style={{
-            height: "140px",
-            width: "140px",
-            margin: "15px",
+            height: "60px",
+            width: "60px",
+            margin: "10px",
             border: "1px solid",
+            borderRadius: "8px",
             padding: "10px",
           }}
           icon={getIcon(format.substring(1))}
         />
-        <IonLabel>
+        <IonLabel style={{ marginLeft: "10px" }}>
           <IonText
             style={{
               fontWeight: "bold",
               textTransform: "capitalize",
+              fontSize: "18px",
             }}
           >
-            {" "}
             {title}
           </IonText>
+          <IonText style={{ display: "block", marginTop: "5px" }}>
+            <strong>Autor: </strong> {toCamelCase(author)}
+          </IonText>
+          <IonText style={{ display: "block", marginTop: "5px" }}>
+            <strong>Formato: </strong> {format.substring(1).toUpperCase()}
+          </IonText>
+        </IonLabel>
+        <div
+          style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}
+        >
+          <IonButton fill="clear" onClick={toggleFavorite}>
+            <IonIcon
+              icon={isFavorite ? heart : heartOutline}
+              style={{ fontSize: "24px", color: isFavorite ? "red" : "grey" }}
+            />
+          </IonButton>
+          <IonButton fill="clear" onClick={() => setShowModal(true)}>
+            <IonIcon
+              icon={informationCircleOutline}
+              style={{ fontSize: "24px" }}
+            />
+          </IonButton>
+          <IonButton onClick={() => navigate(`/bookInfo/${bookId}`, { book })}>
+            Ler
+          </IonButton>
+        </div>
+      </IonItem>
 
+      <IonModal
+        style={{ height: "auto" }}
+        isOpen={showModal}
+        onDidDismiss={closeModal}
+      >
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Informações do Livro</IonTitle>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setShowModal(false)}>Fechar</IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
           <div
             style={{
-              border: "1px solid #ccc",
-              padding: "8px",
-              marginBottom: "8px",
+              padding: "16px",
+              //alignItems: "center",
               display: "flex",
               flexDirection: "column",
+              justifyContent: "center",
+              gap: "12px",
             }}
           >
-            <IonText>
-              <strong>Autor: </strong> {toCamelCase(author)}
+            <IonText
+              style={{
+                textAlign: "center",
+                fontSize: "18px",
+                fontWeight: "bold",
+              }}
+            >
+              <strong>Título:</strong> {title}
             </IonText>
             <IonText>
-              <strong>Fonte: </strong>
+              <strong>Autor:</strong> {toCamelCase(author)}
+            </IonText>
+            <IonText>
+              <strong>Fonte:</strong>{" "}
               {font.charAt(0).toUpperCase() + font.slice(1)}
             </IonText>
             <IonText>
               <strong>Tamanho:</strong> {size}
             </IonText>
             <IonText>
-              <strong>Formato: </strong>
-              {format.substring(1).toUpperCase()}
+              <strong>Formato:</strong> {format.substring(1).toUpperCase()}
             </IonText>
             <IonText>
-              <strong>Link original: </strong>
+              <strong>Link original:</strong>{" "}
               <a href={link} target="_blank" rel="noopener noreferrer">
                 Saiba mais
               </a>
             </IonText>
-            <IonButton
-              onClick={() => navigate(`/bookInfo/${bookId}`, { book })}
-            >
-              Ver mais sobre o livro
-            </IonButton>
           </div>
-        </IonLabel>
-        <IonButton
-          fill="clear"
-          onClick={() => {
-            toggleFavorite();
-            if (onDelete) onDelete();
-          }}
-        >
-          <IonIcon icon={isFavorite ? heart : heartOutline} />
-        </IonButton>
-      </IonItem>
+        </IonContent>
+      </IonModal>
     </motion.div>
   );
 };

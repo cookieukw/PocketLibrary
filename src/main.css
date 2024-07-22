@@ -1,27 +1,81 @@
+@import "/md3/theme.css";
+
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.ion-palette-dark ion-content {
+  --background: none;
+  --md-sys-color-surface: none;
+}
+
+.ion-palette-dark a {
+  color: white;
+}
+
+.ion-palette-dark ion-card {
+  --md-sys-color-surface: none;
+  --color: rgb(211, 126, 164);
+}
 .ion-palette-dark ion-icon {
   --ion-text-color-rgb: rgb(12, 11, 11);
 }
 
 .ion-palette-dark ion-button {
-  --background: rgb(4, 138, 104);
+  --ion-color: rgb(4, 138, 104);
+  color: white;
+}
+.ion-palette-dark ion-text {
+  --ion-color: rgb(4, 138, 104);
   color: white;
 }
 .ion-palette-dark ion-toolbar {
-  --background: rgb(219, 162, 3);
-}
-.ion-palette-dark ion-tab-bar {
-  --background: rgb(7, 6, 6);
-  --color-selected: rgb(161, 125, 7);
+  --background: rgb(70, 13, 40);
+  --color-selected: var(--md-sys-color-secondary-container);
+  --md-sys-color-on-surface-variant: rgb(131, 110, 110);
 }
 
+.ion-palette-dark ion-tab-bar {
+  --background: rgb(27, 4, 15);
+  --color-selected: var(--md-sys-color-secondary-container);
+  --md-sys-color-on-surface-variant: rgb(131, 110, 110);
+}
+
+.ion-palette-dark ion-card {
+  --md-sys-color-surface: none;
+  --color: rgb(207, 114, 114);
+  color: white;
+  --background: rgb(82, 29, 42);
+}
+
+.ion-palette-dark ion-card ion-select {
+  color: none;
+}
+.ion-palette-dark ion-text {
+  --ion-color-base: white !important;
+}
 ion-icon {
   --ion-text-color-rgb: rgb(255, 255, 255);
 }
+ion-icon.iconInfoMini {
+  --ion-text-color-rgb: rgb(224, 211, 211);
+  color: white;
+  border: 1px solid;
+  border-radius: 360px;
+  margin: 0 10px;
+width: 16px;
+height: 16px;
+padding: 3px;
+  box-sizing: border-box !important;
+}
 
 ion-tab-bar {
-  --color: rgb(73, 73, 73);
+  --color: rgb(252, 246, 246);
   --color-selected: rgb(192, 13, 82);
 }
+
 ion-button {
   --background: rgb(9, 87, 151);
   color: white;
@@ -31,4 +85,27 @@ ion-toolbar {
   color: white;
   text-align: center;
   --background: #a11b3a;
+}
+
+.ion-palette-dark ion-tab-bar ion-tab-button.tab-selected {
+  --md-sys-color-on-surface: --md-sys-color-secondary;
+  color: var(--md-sys-color-on-surface);
+  --color: var(--md-sys-color-on-surface);
+}
+
+.sc-ion-searchbar-md-h {
+  height: 56px;
+  --border-radius: 56px;
+}
+
+.ion-palette-dark .sc-ion-searchbar-md-h {
+  --background: rgb(113, 92, 92);
+}
+ion-icon {
+  height: 24px;
+  width: 24px;
+  left: auto !important;
+  right: 16px !important;
+  right: unset;
+  margin-left: 16px;
 }

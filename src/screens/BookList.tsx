@@ -183,7 +183,7 @@ const BookList: React.FC = () => {
           }}
         ></IonSearchbar>
         <div className="flex">
-          <IonIcon icon={alert} />
+          <IonIcon icon={alert} className="iconInfoMini"/>
           <IonText>Digite no mínimo 4 caracteres</IonText>
         </div>
         <motion.div
