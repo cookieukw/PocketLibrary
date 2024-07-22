@@ -12,6 +12,7 @@ import {
   IonTitle,
   IonModal,
   IonContent,
+  IonRippleEffect,
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { motion } from "framer-motion";
@@ -19,7 +20,7 @@ import { getIcon, toCamelCase } from "../classes/util";
 
 import { heartOutline, heart, informationCircleOutline } from "ionicons/icons";
 import database from "../classes/database";
-
+import "./css/BookItem.css";
 interface IBook {
   title: string;
   author: string;
@@ -87,64 +88,44 @@ const BookItem: React.FC<BookItemProps> = ({ book, favorite }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
+      className="ion-activatable"
+      style={{
+        position: "relative",
+      }}
     >
-      <IonItem
-        key={bookId}
-        style={{
-          marginBottom: "15px",
-          padding: "10px",
-          borderRadius: "8px",
-        }}
-      >
-        <IonIcon
-          style={{
-            height: "60px",
-            width: "60px",
-            margin: "10px",
-            border: "1px solid",
-            borderRadius: "8px",
-            padding: "10px",
-          }}
-          icon={getIcon(format.substring(1))}
-        />
-        <IonLabel style={{ marginLeft: "10px" }}>
-          <IonText
-            style={{
-              fontWeight: "bold",
-              textTransform: "capitalize",
-              fontSize: "18px",
-            }}
-          >
-            {title}
+      <IonItem key={bookId} className="book-item">
+        {" "}
+        <IonRippleEffect style={{ color: "red" }}></IonRippleEffect>
+        <IonIcon className="icon" icon={getIcon(format.substring(1))} />
+        <IonLabel className="label">
+          <IonText className="text-bold">
+            <strong>{toCamelCase(title)} </strong>
           </IonText>
-          <IonText style={{ display: "block", marginTop: "5px" }}>
+          <IonText className="block-text">
             <strong>Autor: </strong> {toCamelCase(author)}
           </IonText>
-          <IonText style={{ display: "block", marginTop: "5px" }}>
+          <IonText className="block-text">
             <strong>Formato: </strong> {format.substring(1).toUpperCase()}
           </IonText>
         </IonLabel>
-        <div
-          style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}
-        >
+        <div className="actions">
           <IonButton fill="clear" onClick={toggleFavorite}>
             <IonIcon
               icon={isFavorite ? heart : heartOutline}
-              style={{ fontSize: "24px", color: isFavorite ? "red" : "grey" }}
+              style={{ color: isFavorite ? "red" : "grey" }}
             />
           </IonButton>
-          <IonButton fill="clear" onClick={() => setShowModal(true)}>
-            <IonIcon
-              icon={informationCircleOutline}
-              style={{ fontSize: "24px" }}
-            />
-          </IonButton>
-          <IonButton onClick={() => navigate(`/bookInfo/${bookId}`, { book })}>
-            Ler
+          <IonButton
+            onClick={() => navigate(`/bookInfo/${bookId}`, { book })}
+            fill="clear"
+          >
+            <IonIcon icon={informationCircleOutline} />
           </IonButton>
         </div>
+        <IonButton onClick={() => navigate(`/bookInfo/${bookId}`, { book })}>
+          Sobre
+        </IonButton>
       </IonItem>
-
       <IonModal
         style={{ height: "auto" }}
         isOpen={showModal}
@@ -169,13 +150,7 @@ const BookItem: React.FC<BookItemProps> = ({ book, favorite }) => {
               gap: "12px",
             }}
           >
-            <IonText
-              style={{
-                textAlign: "center",
-                fontSize: "18px",
-                fontWeight: "bold",
-              }}
-            >
+            <IonText>
               <strong>Título:</strong> {title}
             </IonText>
             <IonText>

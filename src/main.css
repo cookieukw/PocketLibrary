@@ -51,7 +51,7 @@
 }
 
 .ion-palette-dark ion-card ion-select {
-  color: none;
+  color: white;
 }
 .ion-palette-dark ion-text {
   --ion-color-base: white !important;
@@ -65,9 +65,9 @@ ion-icon.iconInfoMini {
   border: 1px solid;
   border-radius: 360px;
   margin: 0 10px;
-width: 16px;
-height: 16px;
-padding: 3px;
+  width: 16px;
+  height: 16px;
+  padding: 3px;
   box-sizing: border-box !important;
 }
 
@@ -101,11 +101,5 @@ ion-toolbar {
 .ion-palette-dark .sc-ion-searchbar-md-h {
   --background: rgb(113, 92, 92);
 }
-ion-icon {
-  height: 24px;
-  width: 24px;
-  left: auto !important;
-  right: 16px !important;
-  right: unset;
-  margin-left: 16px;
-}
+
+

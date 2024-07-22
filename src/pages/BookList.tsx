@@ -204,7 +204,7 @@ const BookList: React.FC = () => {
             onClick={() => setShowCategories(!showCategories)}
           >
             {" "}
-            <IonText color="secondary">
+            <IonText color="primary">
               {showCategories ? "Esconder Categorias" : "Mostrar Categorias"}
             </IonText>
           </motion.button>
@@ -218,7 +218,7 @@ const BookList: React.FC = () => {
                 placeholder="Escolha o tipo de busca"
                 onIonChange={(e) => {
                   setSearchType(e.detail.value);
-                  // console.log(`change search by ${e.detail.value});
+                
                   setSkipItems(0);
                   setBooks([]);
                   getBooks(
@@ -298,7 +298,7 @@ const BookList: React.FC = () => {
               animationData={animation404}
               autoplay={true}
               loop={true}
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100vh" }}
             />
           )}
         </IonList>
@@ -308,7 +308,7 @@ const BookList: React.FC = () => {
           threshold="10vh"
           onIonInfinite={(e: any) => {
             if (!isLoading) {
-              //  console.log("carregando mais");
+
               setSkipItems((prev) => {
                 const newSkipItems = prev + itemsSize;
                 getBooks(

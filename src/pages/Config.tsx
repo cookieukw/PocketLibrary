@@ -4,7 +4,6 @@ import {
   IonHeader,
   IonItem,
   IonList,
-  IonListHeader,
   IonPage,
   IonTitle,
   IonToggle,
@@ -54,7 +53,7 @@ const Config: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <IonListHeader>Aparência</IonListHeader>
+      
         <IonList inset={true}>
           <IonItem>
             <IonToggle

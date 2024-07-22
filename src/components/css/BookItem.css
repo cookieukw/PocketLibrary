@@ -1,0 +1,43 @@
+.book-item .icon {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.book-item {
+ text-align: center;
+}
+
+
+.book-item .block-text {
+  display: block;
+  margin-top: 5px;
+}
+
+.book-item .actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+
+@media (max-width: 600px) {
+  .book-item {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .book-item .label {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .book-item .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .book-item .actions ion-button {
+    display: none;
+  }
+}
