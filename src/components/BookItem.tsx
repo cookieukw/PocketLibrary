@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   IonItem,
   IonIcon,
-  IonLabel,
   IonButton,
   useIonViewWillEnter,
   IonText,
@@ -18,9 +17,10 @@ import { useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { getIcon, toCamelCase } from "../classes/util";
 
-import { heartOutline, heart, informationCircleOutline } from "ionicons/icons";
+import { heartOutline, heart } from "ionicons/icons";
 import database from "../classes/database";
 import "./css/BookItem.css";
+
 interface IBook {
   title: string;
   author: string;
@@ -90,41 +90,31 @@ const BookItem: React.FC<BookItemProps> = ({ book, favorite }) => {
       transition={{ duration: 0.5, delay: 0.1 }}
       className="ion-activatable"
       style={{
+        marginTop: "20px",
         position: "relative",
       }}
     >
       <IonItem key={bookId} className="book-item">
-        {" "}
         <IonRippleEffect style={{ color: "red" }}></IonRippleEffect>
+
         <IonIcon className="icon" icon={getIcon(format.substring(1))} />
-        <IonLabel className="label">
-          <IonText className="text-bold">
-            <strong>{toCamelCase(title)} </strong>
-          </IonText>
-          <IonText className="block-text">
-            <strong>Autor: </strong> {toCamelCase(author)}
-          </IonText>
-          <IonText className="block-text">
-            <strong>Formato: </strong> {format.substring(1).toUpperCase()}
-          </IonText>
-        </IonLabel>
-        <div className="actions">
+
+        <IonText className="title">
+          <strong>{toCamelCase(title)}</strong>
+        </IonText>
+
+        <div className="button-group">
           <IonButton fill="clear" onClick={toggleFavorite}>
             <IonIcon
               icon={isFavorite ? heart : heartOutline}
               style={{ color: isFavorite ? "red" : "grey" }}
             />
           </IonButton>
-          <IonButton
-            onClick={() => navigate(`/bookInfo/${bookId}`, { book })}
-            fill="clear"
-          >
-            <IonIcon icon={informationCircleOutline} />
+
+          <IonButton onClick={() => navigate(`/bookInfo/${bookId}`, { book })}>
+            Ler
           </IonButton>
         </div>
-        <IonButton onClick={() => navigate(`/bookInfo/${bookId}`, { book })}>
-          Sobre
-        </IonButton>
       </IonItem>
       <IonModal
         style={{ height: "auto" }}

@@ -53,8 +53,7 @@ const Config: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-      
-        <IonList inset={true}>
+        <IonList style={{ borderRadius: "8px", margin: "10px" }} lines="none">
           <IonItem>
             <IonToggle
               checked={paletteToggle}

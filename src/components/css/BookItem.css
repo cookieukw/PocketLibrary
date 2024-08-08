@@ -1,43 +1,28 @@
-.book-item .icon {
-  border: 1px solid;
-  border-radius: 8px;
-  padding: 10px;
-}
-
 .book-item {
- text-align: center;
-}
-
-
-.book-item .block-text {
-  display: block;
-  margin-top: 5px;
-}
-
-.book-item .actions {
-  margin-left: auto;
-  display: flex;
   align-items: center;
+
 }
 
+.icon {
+  flex: 0 0 50px;
+  height: 50px;
+  margin-right: 16px;
+}
 
-@media (max-width: 600px) {
-  .book-item {
-    flex-direction: column;
-    align-items: center;
-  }
+.title {
+  flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+  font-size: 16px;
+  line-height: 1.5;
+  hyphens: auto;
+}
 
-  .book-item .label {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .book-item .actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .book-item .actions ion-button {
-    display: none;
-  }
+.button-group {
+  display: flex;
+  gap: 8px; /* Espaço entre os botões */
 }

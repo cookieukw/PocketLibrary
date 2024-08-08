@@ -56,19 +56,19 @@
 .ion-palette-dark ion-text {
   --ion-color-base: white !important;
 }
+
+.ion-palette-dark ion-tab-bar ion-tab-button.tab-selected {
+  --md-sys-color-on-surface: --md-sys-color-secondary;
+  color: var(--md-sys-color-on-surface);
+  --color: var(--md-sys-color-on-surface);
+}
+
+.ion-palette-dark .sc-ion-searchbar-md-h {
+  --background: rgb(113, 92, 92);
+}
+
 ion-icon {
   --ion-text-color-rgb: rgb(255, 255, 255);
-}
-ion-icon.iconInfoMini {
-  --ion-text-color-rgb: rgb(224, 211, 211);
-  color: white;
-  border: 1px solid;
-  border-radius: 360px;
-  margin: 0 10px;
-  width: 16px;
-  height: 16px;
-  padding: 3px;
-  box-sizing: border-box !important;
 }
 
 ion-tab-bar {
@@ -87,19 +87,35 @@ ion-toolbar {
   --background: #a11b3a;
 }
 
-.ion-palette-dark ion-tab-bar ion-tab-button.tab-selected {
-  --md-sys-color-on-surface: --md-sys-color-secondary;
-  color: var(--md-sys-color-on-surface);
-  --color: var(--md-sys-color-on-surface);
-}
-
 .sc-ion-searchbar-md-h {
   height: 56px;
   --border-radius: 56px;
 }
+/*
+ion-list {
+  --ion-item-background: transparent;
+  --ion-background-color: transparent;
+  background: transparent;
+}
+*/
 
-.ion-palette-dark .sc-ion-searchbar-md-h {
-  --background: rgb(113, 92, 92);
+ion-list {
+  min-height: 100% !important;
 }
 
-
+.icon-info {
+  --ion-text-color-rgb: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  border: 1px solid;
+  border-radius: 360px;
+  margin: 0 10px;
+  width: 16px;
+  height: 16px;
+  padding: 3px;
+  box-sizing: border-box !important;
+}
+@media (prefers-color-scheme: dark) {
+  .icon-info {
+    background-color: rgb(255, 255, 255);
+  }
+}

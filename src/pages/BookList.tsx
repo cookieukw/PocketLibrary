@@ -183,7 +183,7 @@ const BookList: React.FC = () => {
           }}
         ></IonSearchbar>
         <div className="flex">
-          <IonIcon icon={alert} className="iconInfoMini"/>
+          <IonIcon icon={alert} className="icon-info" />
           <IonText>Digite no mínimo 4 caracteres</IonText>
         </div>
         <motion.div
@@ -218,7 +218,7 @@ const BookList: React.FC = () => {
                 placeholder="Escolha o tipo de busca"
                 onIonChange={(e) => {
                   setSearchType(e.detail.value);
-                
+
                   setSkipItems(0);
                   setBooks([]);
                   getBooks(
@@ -288,7 +288,9 @@ const BookList: React.FC = () => {
             </IonCard>
           )}
         </AnimatePresence>
-        <IonList>
+        <IonList
+         
+        >
           {books.length > 0 ? (
             books.map((book: IBook) => {
               return <BookItem book={book} key={book.bookId} />;
@@ -308,7 +310,6 @@ const BookList: React.FC = () => {
           threshold="10vh"
           onIonInfinite={(e: any) => {
             if (!isLoading) {
-
               setSkipItems((prev) => {
                 const newSkipItems = prev + itemsSize;
                 getBooks(
